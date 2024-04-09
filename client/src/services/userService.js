@@ -1,7 +1,13 @@
 import axios from "axios";
 
-//
-const API_URL = "http://localhost:3000/users";
+// Here are all the functions that will be used in the user service.
+// The functions will be used to fetch data from the server.
+// The functions will also be used to update data in the server.
+
+
+
+const API_URL = "http://localhost:3000/users"; // This is where we define our URL for the API.
+
 // Function to get all users
 export async function getAllUsers() {
     try {
