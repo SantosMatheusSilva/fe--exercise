@@ -29,27 +29,7 @@ export async function removeFollower(userId, {userId: unfollowedId}) {
     }
 }
 
-// Function to add a new follower on a user by user ID
-/* export async function addNewFollower(userId, {userId: followerId}) {
-    try {
-        const response = await axios.post(`${API_URL}/${userId}/followers`, {followerId});
-        return response.data;
-    } catch (error) {
-        console.error('Error creating new follower:', error);
-        throw error;
-    }
-}
- */
-// Function to unfollow a user by user ID
-/*  export async function unfollowUser(userId, {userId: unfollowedId}) {
-   try {
-        const response = await axios.delete(`${API_URL}/${userId}/followers/${unfollowedId}`);
-        return response.data;
-    } catch (error) {
-        console.error('Error unfollowing user:', error);
-        throw error;
-    }
-} */
+
 
 // Following:
 // Function to get all following users from a user by user ID
@@ -84,3 +64,25 @@ export async function addToFollowing(userId, {userId: followedId}) {
         throw error;
     }
 }
+
+// Function to add a new follower on a user by user ID
+/* export async function addNewFollower(userId, {userId: followerId}) {
+    try {
+        const response = await axios.post(`${API_URL}/${userId}/followers`, {followerId});
+        return response.data;
+    } catch (error) {
+        console.error('Error creating new follower:', error);
+        throw error;
+    }
+}
+ */
+// Function to unfollow a user by user ID
+/*  export async function unfollowUser(userId, {userId: unfollowedId}) {
+   try {
+        const response = await axios.delete(`${API_URL}/${userId}/followers/${unfollowedId}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error unfollowing user:', error);
+        throw error;
+    }
+} */
