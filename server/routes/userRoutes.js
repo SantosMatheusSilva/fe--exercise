@@ -1,13 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const isAuthenticated =  require ("../middleware/jwt.middleware.js");
-const db = require('./db.json'); 
+const {isAuthenticated} =  require ("../middleware/jwt.middleware.js");
+const db = require('../db.json'); 
 
 
 // User routes bellow:
+// Route to get all users
+router.get("/users", (req, res) => {
+    return res.status(200).json(db.users);
+})
 
 // Route to fetch user data by user ID
-router.get("user/:userId", isAuthenticated, (req, res) => {
+router.get("/users/:userId", isAuthenticated, (req, res) => {
     const userId = req.params.userId;
     const user = db.users.find(user => user.id === userId);
     try{
@@ -23,7 +27,7 @@ router.get("user/:userId", isAuthenticated, (req, res) => {
 });
 
 // Route to update user profile
-router.put("/user/:userId", isAuthenticated, (req, res) => {
+router.put("/users/:userId", isAuthenticated, (req, res) => {
     const {userId} = req.params;
     const {firstName, lastName, email, userName} = req.body;
 
@@ -72,8 +76,10 @@ router.put("/user/:userId", isAuthenticated, (req, res) => {
    res.status(200).json({ message: "User profile updated successfully", user: db.users[userIndex] });
 });
 
+/* ------------------------------------- FOLLOW ROUTES ------------------------------------- */
+
 // Custom route to fetch all follower of a user by user ID
-router.get("user/:userId/followers", isAuthenticated, (req, res) => {
+router.get("/users/:userId/followers", isAuthenticated, (req, res) => {
     const {userId} = req.params;
 
     // Find the user in the db.json
@@ -87,7 +93,7 @@ router.get("user/:userId/followers", isAuthenticated, (req, res) => {
 })
 
 // Custom route to fetch all following of a user by user ID
-router.get("user/:userId/following", isAuthenticated, (req, res) => {
+router.get("/users/:userId/following", isAuthenticated, (req, res) => {
     const {userId} = req.params;
 
     // Find the user in the db.json
@@ -101,7 +107,7 @@ router.get("user/:userId/following", isAuthenticated, (req, res) => {
 })
 
 // Custom route to follow a user 
-router.post("user/:userId/follow", isAuthenticated, (req, res) => {
+router.post("/users/:userId/follow", isAuthenticated, (req, res) => {
     const {userId} = req.params;
     const {followerId, followingId, userName} = req.body;
 
@@ -135,7 +141,7 @@ router.post("user/:userId/follow", isAuthenticated, (req, res) => {
     res.status(200).json({ message: "User followed successfully", following: user.following });
 
 // Custom route to unfollow a user
-router.put("user/:userId/unfollow", isAuthenticated, (req, res) => {
+router.put("/users/:userId/unfollow", isAuthenticated, (req, res) => {
     const {userId} = req.params;
     const {userIdToUnfollow} = req.body;
 

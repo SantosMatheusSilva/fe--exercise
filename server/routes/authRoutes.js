@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const isAuthenticated =  require ("../middleware/jwt.middleware.js");
-const db = require('./db.json'); 
+const {isAuthenticated} =  require ("../middleware/jwt.middleware.js");
+const db = require('../db.json'); 
+const fs = require('fs');
 
 // Handles password encryption
 const bcrypt = require("bcrypt");
@@ -58,11 +59,19 @@ router.post("/signup", (req, res) => {
             firstName,
             lastName,
             userName,
-            profilePic,
-            bio
+            profilePic: "",
+            bio: "",
+            followers: [],
+            following: [],
+            posts: []
         };
         // Add the new user to the database 
         db.users.push(newUser);
+        const dbJson = JSON.stringify(db, null, 2);
+
+        // Write the JSON string back to db.json file
+        fs.writeFileSync('./db.json', dbJson);
+
 
         res.status(201).json({message: "User created successfully"});
     } catch(error) {
@@ -79,15 +88,17 @@ router.post("/login", (req, res) => {
     // Check if all the required fields are filled out
     if(email === "" || password === "") {
         res.status(400).json({message: "Please provide email and password"});
+        console.log("Please provide email and password");
         return;
     }
 
     // Find the user in the database
-    const foundUser = db.users.find(user => user.email === email);
+    const foundUser = db.users.find(user => user.email.toLocaleLowerCase() === email.toLocaleLowerCase());
 
     // If user not found return an error message
     if(!foundUser) {
         res.status(401).json({message: "Authentication failed"});
+        console.log("email  incorrect");
         return;
     }
 
@@ -97,17 +108,19 @@ router.post("/login", (req, res) => {
     // If password is incorrect return an error message
     if(!passwordCorrect) {
         res.status(401).json({message: "Authentication failed"});
+        console.log(" password incorrect");
         return;
     }
     // if password is correct create a token
-    if(passwordCorrect) {
-        const payload = {
-            id: foundUser.id,
-            email: foundUser.email
-        }
-        const token = jwt.sign(payload, process.env.SECRET, {expiresIn: "1h"});
-        res.status(200).json({message: "Login successful", token: token});
-    }
+    
+        const {id, userName} = foundUser;
+
+        const payload = {id, email, userName};
+
+         authToken = jwt.sign(payload, process.env.JWT_SECRET, {algorithm: "HS256", expiresIn: "1h"});
+    
+    // Return the token with status code
+    res.status(200).json({ authToken: authToken});
 })
 
 // Route to logout an existing user by clearing their token from the cookies
@@ -125,3 +138,14 @@ router.get("/verify", isAuthenticated, (req, res) => {
 });
 
 module.exports = router;
+
+/* const plaintextPassword = 'yourPlaintextPassword';
+const hashedPassword = bcrypt.hashSync(plaintextPassword, 10);
+
+console.log('Hashed password:', hashedPassword); */
+
+/* 
+john = hqcgul
+jane = blceov
+sam = aecpsa
+*/

@@ -2,13 +2,23 @@
 import { useNavigate, Link } from "react-router-dom";
 import { useState, useContext } from "react";
 // Chakra UI imports:
-import {Card, FormControl, FormLabel, FormErrorMessage, FormHelperText, Input, Button, Heading, Text} from '@chakra-ui/react'
+import {
+    Card, 
+    FormControl, 
+    FormLabel, 
+    FormErrorMessage, 
+    FormHelperText, 
+    Input, 
+    Button, 
+    Heading, 
+    Textarea
+} from '@chakra-ui/react'
 //import { AuthContext } from "../context/auth.context"; --> uncomment once the auth middleware is done.
 import axios from "axios"; // --> axios is used to send requests to the server.
 
 // Assign our URL to a variable.
-//const API_URL = "http://localhost:5005";
-
+const API_URL_AUTH = 'http://localhost:3000/auth' || import.meta.API_URL_AUTH;
+const API_URL= 'http://localhost:3000/api' || import.meta.API_URL;
 // Create the functional component Signup that will handle the user signup process.
 function Signup() {
     const [firstName, setFirstName] = useState("");
@@ -20,6 +30,7 @@ function Signup() {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState(undefined);
     const [isLoading, setIsLoading] = useState(false);
+    const [bio, setBio] = useState("");
 
     // Inicialize the useNavigate
     const navigate = useNavigate();
@@ -31,6 +42,7 @@ function Signup() {
     const handleEmail = (e) => setEmail(e.target.value);
     const handlePassword = (e) => setPassword(e.target.value);
     const handleConfirmPassword = (e) => setConfirmPassword(e.target.value);
+    const handleBio = (e) => setBio(e.target.value);
     
     // Create the handleSignupSubmit function which will be called when the form is submitted.
     const handleSignupSubmit = async (e) => {
@@ -75,11 +87,11 @@ function Signup() {
         const requestBody = { firstName, lastName, username, profilePic, email, password, confirmPassword };
 
         axios
-            .post(`${API_URL}/signup`, requestBody)  // Send a POST request with the data in the request body.
+            .post(`${API_URL_AUTH}/signup`, requestBody)  // Send a POST request with the data in the request body.
             .then(() => {
                 setIsLoading(false);
                 alert("Signup successful");
-                navigate("/login");
+                navigate("/profile");
             })
             .catch((error) => {
                 setErrorMessage("An error occurred while trying to signup. Please try again.");
@@ -132,6 +144,13 @@ function Signup() {
             name="profilePic" 
             value={profilePic} 
             onChange={handleProfilePic} />
+
+            <FormLabel>Bio (optional) </FormLabel>
+            <Textarea
+            id="bio"
+            name="bio"
+            value={bio}
+            onChange={handleBio} />
 
             <FormLabel>Email</FormLabel>
             <Input  bg={"white"} mb={6}

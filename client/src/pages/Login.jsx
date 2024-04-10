@@ -3,11 +3,11 @@ import { useNavigate, Link } from "react-router-dom";
 import { useState, useContext } from "react";
 // Chakra UI imports:
 import {Card, FormControl, FormLabel, FormErrorMessage, FormHelperText, Input, Button, Heading, Text} from '@chakra-ui/react'
-//import { AuthContext } from "../context/auth.context"; --> uncomment once the auth middleware is done.
+import { AuthContext } from "../context/auth.context"; 
 import axios from "axios"; // --> axios is used to send requests to the server.
 
 // Assign our URL to a variable.
-//const API_URL = "http://localhost:5005";
+const API_URL_AUTH = 'http://localhost:3000/auth' || import.meta.API_URL_AUTH;
 
 // Create the functional component Login that will handle the user login process.
 function Login() {
@@ -16,8 +16,8 @@ function Login() {
     const [errorMessage, setErrorMessage] = useState(undefined);
     const [isLoading, setIsLoading] = useState(false);
 
-    // Accessing the value from AuthContext by the useContext hook  
-    //const {saveToken, authenticateUser} = useContext(AuthContext); --> uncomment once the auth middleware is done.
+    //Accessing the value from AuthContext by the useContext hook  
+    const {saveToken, authenticateUser} = useContext(AuthContext); 
 
     // Initialize the useNavigate
     const navigate = useNavigate();
@@ -31,17 +31,17 @@ function Login() {
         const requestBody = { email, password };
 
         axios
-            .post(`${API_URL}/login`, requestBody)  // Send a POST request with the data in the request body.
+            .post(`${API_URL_AUTH}/login`, requestBody)  // Send a POST request with the data in the request body.
             .then((response) => {
                 console.log("JWT token", response.data.authToken);
 
-                setIsLoading(false);
+                //setIsLoading(false);
                 // Save the token in the localStorage
                 saveToken(response.data.authToken);
                 // Authenticate the user
                 authenticateUser();
                 // Redirect the user to the main page after successful login.
-                navigate("/"); // --> change the path !!!!
+                navigate("/profile"); // --> change the path for feed page!!!!
             })
             .catch((error) => {
                 const errorDescription = error.response.data.message || "An error occurred. Please try again.";

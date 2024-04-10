@@ -1,7 +1,6 @@
 {
   "users": [
     {
-      "id": "1",
       "email": "john.doe@example.com",
       "password": "hqcgul",
       "firstName": "John",
@@ -71,10 +70,23 @@
           "userName": " "
         }
       ]
+    },
+    {
+      "id": 4,
+      "email": "carlos.almeida@gmail.com",
+      "password": "$2b$10$f.C1PlbmGItVUk1b17b9eO9wqzT1Y8PgoBD3XJMP8zAgKZ4oQKs/y",
+      "firstName": "carlos",
+      "lastName": "almeida",
+      "userName": "carlos almeida ",
+      "profilePic": "",
+      "bio": "",
+      "followers": [],
+      "following": [],
+      "posts": []
     }
   ],
   "posts": [
-    { 
+    {
       "userId": "1",
       "postedAt": "2024-03-20T10:00:00",
       "title": "Exciting News!",

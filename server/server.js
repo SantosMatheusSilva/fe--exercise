@@ -1,5 +1,5 @@
 require("dotenv").config();
-const jsonServer = require("json-server");
+//const jsonServer = require("json-server");
 const morgan = require("morgan");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
@@ -9,9 +9,11 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 
 
-const { isAuthenticated, jwtErrorHandler } = require("./jwt.middleware");
+const { isAuthenticated, jwtErrorHandler } = require("./middleware/jwt.middleware");
 const errorHandler = require("./middleware/errorHandler");
-const authRoutes = require("./routes/authRoutes");
+
+
+
 
 const app = express();
 const PORT = process.env.PORT;
@@ -23,28 +25,36 @@ app.use(cookieParser());
 app.use(cors());
 app.use(morgan('dev'));
 
-app.use(isAuthenticated);
-
-// Routes
-app.use('/auth', authRoutes);
-app.use('/users', isAuthenticated, userRoutes);
-app.use('/posts', isAuthenticated, postRoutes);
-
 app.use(jwtErrorHandler);
 app.use(errorHandler);
+//app.use(isAuthenticated);
+
+// Routes
+const authRoutes = require("./routes/authRoutes");
+app.use('/auth', authRoutes);
+
+const userRoutes = require("./routes/userRoutes");
+app.use('/api', userRoutes);
+
+const postRoutes = require("./routes/postRoutes");
+app.use('/api', postRoutes);
 
 
-server.listen(PORT, () => {
+// Allow requests from the front end
+const FRONT_END_URL = process.env.FRONT_END_URL;
+const allowedOrigins = FRONT_END_URL; // Replace with your frontend URLs
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
+}));
+
+
+app.listen(PORT, () => {
   console.log(`JSON Server is running at port ${PORT}`);
 }); 
 
-/* const server = jsonServer.create();
-const router = jsonServer.router("db.json");
-const middlewares = jsonServer.defaults();
-const PORT = process.env.PORT;
-
-server.use(middlewares);
-server.use(morgan("dev"));
-
-server.use(router);
-*/
