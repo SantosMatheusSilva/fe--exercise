@@ -17,10 +17,11 @@ import {
 import axios from "axios"; // --> axios is used to send requests to the server.
 
 // Assign our URL to a variable.
-const API_URL_AUTH = 'http://localhost:3000/auth' || import.meta.API_URL_AUTH;
-const API_URL= 'http://localhost:3000/api' || import.meta.API_URL;
+const API_URL_AUTH = 'http://localhost:3001/auth' || import.meta.API_URL_AUTH;
+const API_URL= 'http://localhost:3001/api' || import.meta.API_URL;
 // Create the functional component Signup that will handle the user signup process.
 function Signup() {
+    const {userId} = useParams();
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [username, setUsername] = useState("");
@@ -91,7 +92,7 @@ function Signup() {
             .then(() => {
                 setIsLoading(false);
                 alert("Signup successful");
-                navigate("/profile");
+                navigate("/login");
             })
             .catch((error) => {
                 setErrorMessage("An error occurred while trying to signup. Please try again.");

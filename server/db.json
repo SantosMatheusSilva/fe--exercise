@@ -1,6 +1,7 @@
 {
   "users": [
     {
+      "id": "1",
       "email": "john.doe@example.com",
       "password": "hqcgul",
       "firstName": "John",
@@ -72,12 +73,24 @@
       ]
     },
     {
-      "id": 4,
+      "id": "4",
       "email": "carlos.almeida@gmail.com",
       "password": "$2b$10$f.C1PlbmGItVUk1b17b9eO9wqzT1Y8PgoBD3XJMP8zAgKZ4oQKs/y",
       "firstName": "carlos",
       "lastName": "almeida",
       "userName": "carlos almeida ",
+      "profilePic": "",
+      "bio": "",
+      "followers": [],
+      "following": [],
+      "posts": []
+    },
+    {
+      "id": 5,
+      "email": "matheus.santos@gmail.com",
+      "password": "$2b$10$mGUFEpWjLniNYNu7WjpzUuF/xP22U9ffHyHQfk0YwJZwDp7kh/1we",
+      "firstName": "Matheus",
+      "lastName": "Santos",
       "profilePic": "",
       "bio": "",
       "followers": [],

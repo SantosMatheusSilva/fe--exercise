@@ -35,14 +35,15 @@ app.use('/auth', authRoutes);
 
 const userRoutes = require("./routes/userRoutes");
 app.use('/api', userRoutes);
+app.get("/api/users/:userId",  isAuthenticated )
 
 const postRoutes = require("./routes/postRoutes");
 app.use('/api', postRoutes);
 
 
 // Allow requests from the front end
-const FRONT_END_URL = process.env.FRONT_END_URL;
-const allowedOrigins = FRONT_END_URL; // Replace with your frontend URLs
+/* const FRONT_END_URL = process.env.FRONT_END_URL;
+const allowedOrigins = [FRONT_END_URL]; // Replace with your frontend URLs
 app.use(cors({
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
@@ -50,7 +51,14 @@ app.use(cors({
     } else {
       callback(new Error('Not allowed by CORS'));
     }
-  }
+  },
+  allowedHeaders: ['Authorization', 'Content-Type'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow the necessary HTTP methods
+  preflightContinue: false 
+})); */
+
+app.use(cors({
+  allowedHeaders: ['Authorization'], // Allow authorization header
 }));
 
 

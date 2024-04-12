@@ -111,25 +111,30 @@ router.post("/login", (req, res) => {
         console.log(" password incorrect");
         return;
     }
-    // if password is correct create a token
-    
-        const {id, userName} = foundUser;
+    if (passwordCorrect) {
+        // Deconstruct the user object to omit the password
+        const { id, email, name } = foundUser;
 
-        const payload = {id, email, userName};
+        // Create an object that will be set as the token payload
+        const payload = { id, email, name };
 
-         authToken = jwt.sign(payload, process.env.JWT_SECRET, {algorithm: "HS256", expiresIn: "1h"});
-    
+        // Create a JSON Web Token and sign it
+        const authToken = jwt.sign(payload, process.env.JWT_SECRET, {
+          algorithm: "HS256",
+          expiresIn: "6h",
+        });
     // Return the token with status code
     res.status(200).json({ authToken: authToken});
-})
+}
+});
 
 // Route to logout an existing user by clearing their token from the cookies
-router.get('/logout', (req, res) => {
+/* router.get('/logout', (req, res) => {
     res.clearCookie('token');
     res.status(200).json({message: "Logout successful"});
 
 });
-
+ */
 // Auth verify route - checks if the user is authenticated
 router.get("/verify", isAuthenticated, (req, res) => {
     console.log('req.payload', req.payload);

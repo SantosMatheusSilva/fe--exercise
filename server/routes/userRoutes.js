@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {isAuthenticated} =  require ("../middleware/jwt.middleware.js");
 const db = require('../db.json'); 
+const fs= require('fs');
 
 
 // User routes bellow:
@@ -11,12 +12,13 @@ router.get("/users", (req, res) => {
 })
 
 // Route to fetch user data by user ID
-router.get("/users/:userId", isAuthenticated, (req, res) => {
-    const userId = req.params.userId;
-    const user = db.users.find(user => user.id === userId);
+/* router.get("/users/:id", isAuthenticated, (req, res) => {
+    const {id}= req.params.id;
+    const user = db.users.find(user => user.id.toString() === id); //parseInt(id)
     try{
         if(user) {
             res.status(200).json(user);
+            console.log(user);
         } else {
             res.status(404).json({message: "User not found"});
         }
@@ -24,6 +26,34 @@ router.get("/users/:userId", isAuthenticated, (req, res) => {
         console.error('Error fetching user data:', error);
         res.status(500).json({message: "Error fetching user data"});
     }
+}); */
+
+router.get("/users/:id", isAuthenticated,  (req, res) => {
+    const id = req.params.id;
+
+    // Read the contents of the db.json file
+    fs.readFile('db.json', 'utf8', (err, data) => {
+        if (err) {
+            console.error('Error reading db.json:', err);
+            return res.status(500).json({ message: "Error reading user data" });
+        }
+
+        try {
+            // Parse the JSON data
+            const db = JSON.parse(data);
+            const user = db.users.find(user => user.id.toString() === id);
+
+            if (user) {
+                res.status(200).json(user);
+                console.log(user);
+            } else {
+                res.status(404).json({ message: "User not found" });
+            }
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+            res.status(500).json({ message: "Error fetching user data" });
+        }
+    });
 });
 
 // Route to update user profile

@@ -4,7 +4,7 @@ import axios from "axios";
 // The functions will be used to fetch data from the server.
 // The functions will also be used to update data in the server.
 
-const API_URL = 'http://localhost:3000/api' || import.meta.API_URL; // This is where we define our URL for the API.
+const API_URL = 'http://localhost:3001/api' || import.meta.API_URL; // This is where we define our URL for the API.
 
 // Function to get all posts
 export async function getAllPosts() {

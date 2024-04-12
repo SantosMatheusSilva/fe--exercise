@@ -1,7 +1,7 @@
 // Necessary imports:
 import { Link } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 // Chakra UI imports:
 import { 
     Box, 
@@ -24,39 +24,32 @@ import {getUser} from "../services/userService"
 import { AuthContext } from "../context/auth.context";
 
 // Create the functional component
-function Navbar({userId, token}) {
-    const { isLoggedIn, logOut} = useContext(AuthContext);
+function Navbar() {
+    const { userId, isLoggedIn, logOut} = useContext(AuthContext);
     const [userData, setUserData] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [user, setUser] = useState(null);
+    const [error, setError] = useState(null);
+    //const [user, setUser] = useState(null);
+    //const {userId} = useParams();
     const navigate = useNavigate();
 
-    console.log('Component is rendering');
-
-    // Fetch user data 
-    useEffect(() => {
-        console.log('useEffect is running');
-        async function fetchUser(userId) {
-            console.log('user:', user);
-            console.log('token:', token);
+    // Fetch user data
+    useEffect (() => {
+        setIsLoading(true);
+        async function fetchUserData() {
             try {
-                const fetchedUser = await getUser(userId, token);
-                
-                setUser(fetchedUser);
-              console.log('user:', user);
+                const data = await getUser(userId);
+                console.log('userdata ---->',data);
+                setUserData(data);
             } catch (error) {
-                console.error('Error fetching user data:', error);
-                
-            } finally {
+                console.error("error fetching user data in the navbar:", error);
                 setIsLoading(false);
+                setError('An error occurred while trying to fetch user data');
             }
         }
-        if(userId && token) {
-            fetchUser();
-        }
-     
-    }, [userId, token]); 
-
+        fetchUserData();
+    }, [userId]);
+   
     const handleLogout = () => {
         logOut();
         navigate("/");
@@ -82,14 +75,14 @@ function Navbar({userId, token}) {
                     <Box>
                         <Popover justifyContent={"center"}>
                             <PopoverTrigger>
-                                <Avatar  src={user?.profilePic} ></Avatar>
+                                <Avatar  src={userId?.profilePic} ></Avatar>
                             </PopoverTrigger>
                             <PopoverContent color={"brand.700"}>
                                 <PopoverArrow />
-                                <PopoverHeader > Hey {user?.userName}!</PopoverHeader>
+                                <PopoverHeader > Hey {userId?.userName}!</PopoverHeader>
                                 <PopoverCloseButton />
                                 <PopoverBody>
-                                    <Link to="/profile">Profile</Link><br/>
+                                    <Link to={`/profile/${userId}`}>Profile</Link><br/>
                                 </PopoverBody>
                                 <PopoverFooter>
                                     <Button onClick={handleLogout} rightIcon={<MdLogout />} color={"brand.700"}>

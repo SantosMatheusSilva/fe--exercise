@@ -1,6 +1,6 @@
 import axios from "axios";
 import { AuthContext } from "../context/auth.context";
-import { useContext, useEffect, useState, } from "react";
+import { useContext } from "react";
 import { useParams } from "react-router-dom";
 // Here are all the functions that will be used in the user service.
 // The functions will be used to fetch data from the server.
@@ -8,12 +8,10 @@ import { useParams } from "react-router-dom";
 
 
 
-const API_URL = import.meta.API_URL || 'http://localhost:3000/api'; // This is where we define our URL for the API.
-
-const token = localStorage.getItem('token') || null;
+const API_URL = import.meta.API_URL || 'http://localhost:3001/api'; // This is where we define our URL for the API.
 
 // Function to get all users
-export async function getAllUsers( ) {
+export async function getAllUsers() {
     
    try {
         const response = await axios.get(`${API_URL}/users`);
@@ -25,16 +23,20 @@ export async function getAllUsers( ) {
 }
 
 // Function to fetch user data by user ID
-export async function getUser(userId, token) {
+export async function getUser(userId) {
+    const authToken = localStorage.getItem('authToken') || null;
     try {
+        if(!authToken){
+            throw new Error('Token not found');
+        }
+        
         const response = await axios.get(`${API_URL}/users/${userId}`, {
-            headers: { Authorization: `Bearer ${token}` },
+            headers: { Authorization: `Bearer ${authToken}` },
         });
         if(!response.data){
             throw new Error('User not found');
         }
-        const userData = await response.json();
-        return userData;
+        return response.data;
     } catch (error) {
         console.error('Error fetching user data:', error);
         throw error;
@@ -42,7 +44,7 @@ export async function getUser(userId, token) {
 }
 
 // Function to update user profile
-export async function updateUserPProfile(userId, updatedProfileData) {
+export async function updateUserProfile(userId, updatedProfileData) {
     try {
         const response = await axios.put(`${API_URL}/users/${userId}`, updatedProfileData);
         return response.data;

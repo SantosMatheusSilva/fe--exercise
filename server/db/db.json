@@ -70,6 +70,19 @@
           "userName": " "
         }
       ]
+    },
+    {
+      "id": "4",
+      "email": "carlos.almeida@gmail.com",
+      "password": "$2b$10$f.C1PlbmGItVUk1b17b9eO9wqzT1Y8PgoBD3XJMP8zAgKZ4oQKs/y",
+      "firstName": "carlos",
+      "lastName": "almeida",
+      "userName": "carlos almeida ",
+      "profilePic": "",
+      "bio": "",
+      "followers": [],
+      "following": [],
+      "posts": []
     }
   ],
   "posts": [
