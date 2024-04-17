@@ -103,14 +103,14 @@ router.post("/login", (req, res) => {
     }
 
     // Check if the password is correct 
-    const passwordCorrect = bcrypt.compareSync(password, foundUser.password);
-
+    /* const passwordCorrect = bcrypt.compareSync(password, foundUser.password); */
+    const passwordCorrect = foundUser.password === password;
     // If password is incorrect return an error message
-    if(!passwordCorrect) {
+   /*  if(!passwordCorrect) {
         res.status(401).json({message: "Authentication failed"});
         console.log(" password incorrect");
         return;
-    }
+    } */
     if (passwordCorrect) {
         // Deconstruct the user object to omit the password
         const { id, email, name } = foundUser;
