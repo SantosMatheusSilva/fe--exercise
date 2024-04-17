@@ -23,14 +23,15 @@ export async function getAllUsers() {
 }
 
 // Function to fetch user data by user ID
-export async function getUser(userId) {
+
+export async function getUser(id) {
     const authToken = localStorage.getItem('authToken') || null;
     try {
         if(!authToken){
             throw new Error('Token not found');
         }
         
-        const response = await axios.get(`${API_URL}/users/${userId}`, {
+        const response = await axios.get(`${API_URL}/users/${id}`, {
             headers: { Authorization: `Bearer ${authToken}` },
         });
         if(!response.data){

@@ -96,10 +96,35 @@
       "followers": [],
       "following": [],
       "posts": []
+    },
+    {
+      "id": 6,
+      "email": "andrei.molina@gmail.com",
+      "password": "Am123456",
+      "firstName": "andreia",
+      "lastName": "molina",
+      "profilePic": "",
+      "bio": "",
+      "followers": [],
+      "following": [],
+      "posts": []
+    },
+    {
+      "id": 7,
+      "email": "joao.mamao@gmail.com",
+      "password": "Jo123456",
+      "firstName": "joao",
+      "lastName": "mamão",
+      "profilePic": "",
+      "bio": "",
+      "followers": [],
+      "following": [],
+      "posts": []
     }
   ],
   "posts": [
     {
+      "postId": "1",
       "userId": "1",
       "postedAt": "2024-03-20T10:00:00",
       "title": "Exciting News!",

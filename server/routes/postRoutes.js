@@ -13,7 +13,7 @@ router.get('/posts', (req, res) =>{
 // Route to fetch post by post ID
 router.get('/posts/:postId', (req, res) =>{
     const postId = req.params.postId;
-    const post = db.posts.find(post => post.id === postId);
+    const post = db.posts.find(post => post.postId === postId);
     try{
         if(post) {
             res.status(200).json(post);

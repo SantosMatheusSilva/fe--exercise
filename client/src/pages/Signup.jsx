@@ -1,5 +1,5 @@
 // Necessary imports:
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useParams } from "react-router-dom";
 import { useState, useContext } from "react";
 // Chakra UI imports:
 import {
@@ -69,6 +69,7 @@ function Signup() {
         const passwordRegex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
         if (!passwordRegex.test(password)) {
             setErrorMessage("Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number");
+            window.alert("Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number");
             return;
         }
         // Check if a profilePic URL is provided if not use a default avatar 
@@ -78,10 +79,11 @@ function Signup() {
         // Check if the username or email is unique
         const response = await fetch(`${API_URL}/users`);
         const users = await response.json();
-        const existingUser = users.find(user => user.username === username);
+        //const existingUser = users.find(user => user.username === username);
         const existingEmail = users.find(user => user.email === email);
-        if(existingUser || existingEmail) {
-            setErrorMessage("This username already exists");
+        if(existingEmail) {
+            setErrorMessage("This email is already registered.");
+            window.alert("This email is already registered.");
             return;
         }
         // Send a POST request with the data in the request body.
@@ -91,8 +93,8 @@ function Signup() {
             .post(`${API_URL_AUTH}/signup`, requestBody)  // Send a POST request with the data in the request body.
             .then(() => {
                 setIsLoading(false);
-                alert("Signup successful");
-                navigate("/login");
+                alert("Signup successful!!!");
+                navigate("/");
             })
             .catch((error) => {
                 setErrorMessage("An error occurred while trying to signup. Please try again.");
