@@ -30,17 +30,18 @@ router.post("/signup", (req, res) => {
     const passwordRegex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
     if(!passwordRegex.test(password)) {
          res.status(400).json({message: "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number"});
+         window.alert("Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number");
         return;
     }
 
     // Check if the username or email is unique
-    const userNameExists = db.users.some(user => user.userName === userName);
+    //const userNameExists = db.users.some(user => user.userName === userName);
     const emailExists = db.users.some(user => user.email === email);
 
-    if(userNameExists) {
+    /* if(userNameExists) {
         res.status(400).json({message: "This username already exists"});
         return;
-    }
+    } */
     if(emailExists) {
         res.status(400).json({message: "This email already exists"});
         return;
@@ -49,13 +50,13 @@ router.post("/signup", (req, res) => {
     
     try{
         // Hash the password
-        const hashedPassword = bcrypt.hashSync(password, saltRounds);
+        //const hashedPassword = bcrypt.hashSync(password, saltRounds);
 
         // Create a new user with hashed password
         const newUser = {
             id: db.users.length + 1,
             email,
-            password: hashedPassword,
+            password, /* hashedPassword, */
             firstName,
             lastName,
             userName,
